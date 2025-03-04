@@ -9,7 +9,7 @@
     - [x] Initialize the project: `git init`.
     - [x] Create a `.gitignore` for C projects.
 
-- [ ] **Task 1.2: Basic Project Structure**
+- [x] **Task 1.2: Basic Project Structure**
   - [x] Create the following folder structure:
     ```
     shell/
@@ -37,18 +37,18 @@
 
 ## Chapter 2: Building the Command Loop
 
-- [ ] **Task 2.1: Infinite Command Loop**
-  - [ ] Continuously display the prompt until `exit` is typed.
+- [x] **Task 2.1: Infinite Command Loop**
+  - [x] Continuously display the prompt until `exit` is typed.
 
-- [ ] **Task 2.2: Customize the Shell Prompt**
-  - [ ] Display current working directory using `getcwd()`.
-  - [ ] Show the current username with `getenv("USER")`.
+- [x] **Task 2.2: Customize the Shell Prompt**
+  - [x] Display current working directory using `getcwd()`.
+  - [x] Show the current username with `getenv("USER")`.
 
-- [ ] **Task 2.3: Tokenize Input**
-  - [ ] Split input into tokens (command + arguments) using `strtok()`.
+- [x] **Task 2.3: Tokenize Input**
+  - [x] Split input into tokens (command + arguments) using `strtok()`.
 
-- [ ] **Task 2.4: Handle Empty Input**
-  - [ ] Ignore empty input when the user presses Enter.
+- [x] **Task 2.4: Handle Empty Input**
+  - [x] Ignore empty input when the user presses Enter.
 
 ---
 

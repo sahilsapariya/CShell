@@ -3,6 +3,9 @@
 
 #define PROMPT_MSG "cshell=# "
 
+// Function prototype to initialize shell
+void initialize_shell();
+
 // Function prototype to disply working directory
 void print_prompt();
 
@@ -13,6 +16,9 @@ void exit_shell();
 void read_input(char *input);
 
 // Function prototype to display output
-void display_output(char *output);
+void display_output(char **output);
+
+// Function prototype to tokenize input
+char **tokenize_input(char *input);
 
 #endif
