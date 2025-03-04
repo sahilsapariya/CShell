@@ -16,3 +16,13 @@ void exit_shell() {
         exit(0);
     }
 }
+
+void read_input(char *input) {
+    fgets(input, 1024, stdin);
+    return;
+}
+
+void display_output(char *output) {
+    printf("%s", output);
+    return;
+}

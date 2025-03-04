@@ -9,4 +9,10 @@ void print_prompt();
 // Function prototype to end program
 void exit_shell();
 
+// Function prototype to read user input
+void read_input(char *input);
+
+// Function prototype to display output
+void display_output(char *output);
+
 #endif
