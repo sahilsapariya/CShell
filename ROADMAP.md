@@ -22,16 +22,16 @@
     - [x] Add a basic Makefile.
     - [x] Add a `README.md` file.
 
-- [ ] **Task 1.3: Implement Basic Input/Output**
-  - [ ] Implement `main.c` to:
-    - [ ] Print a prompt.
-    - [ ] Read a single line of input.
-    - [ ] Echo the input back.
+- [x] **Task 1.3: Implement Basic Input/Output**
+  - [x] Implement `main.c` to:
+    - [x] Print a prompt.
+    - [x] Read a single line of input.
+    - [x] Echo the input back.
 
-- [ ] **Task 1.4: Compile & Run the Program**
-  - [ ] Add compilation instructions to the Makefile.
-  - [ ] Compile and run: `make`.
-  - [ ] Ensure basic I/O is functional.
+- [x] **Task 1.4: Compile & Run the Program**
+  - [x] Add compilation instructions to the Makefile.
+  - [x] Compile and run: `make`.
+  - [x] Ensure basic I/O is functional.
 
 ---
 
