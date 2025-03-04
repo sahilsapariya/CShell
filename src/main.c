@@ -1,22 +1,27 @@
 #include<stdio.h>
-#include<unistd.h>
 #include<string.h>
 #include "builtin.h"
 
 int main() {
-    char cwd[1024];
-    getlogin_r(cwd, sizeof(cwd));
+    initialize_shell();
 
+    char input[1024];
+
+    // infinite loop to keep the shell running
     do {
         print_prompt();
-        read_input(cwd);
+        read_input(input);
 
         // check if user wants to exit
-        if (strcmp(cwd, "exit\n") == 0) {
+        if (strcmp(input, "exit\n") == 0) {
             exit_shell();
         }
 
-        display_output(cwd);
+        // tokenize the input
+        char **tokens = tokenize_input(input);
+
+
+        display_output(tokens);
     } while (1);
 
     return 0;
