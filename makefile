@@ -1,7 +1,18 @@
-run:
-	echo "Compiling and running the program"
-	gcc -o main src/main.c
-	./main
+CC = gcc
+CFLAGS = -Wall -Iinclude
+
+SRCS = src/main.c src/builtin.c
+OBJS = $(SRCS:.c=.o)
+
+TARGET = cshell
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	@$(CC) -o $(TARGET) $(OBJS)
+
+%.o: %.c
+	@$(CC) $(CFLAGS) -c -o $@ $<
+
 clean:
-	echo "Cleaning up"
-	rm main
+	@rm -f $(OBJS) $(TARGET)
