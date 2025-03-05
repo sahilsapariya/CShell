@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Iinclude
 
-SRCS = src/main.c src/builtin.c
+SRCS = src/main.c src/builtin.c src/utils.c
 OBJS = $(SRCS:.c=.o)
 
 TARGET = cshell

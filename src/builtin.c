@@ -2,23 +2,30 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <libgen.h>
 #include "builtin.h"
 
+#define PROMPT_MSG "cshell=# "
+#define MAX_COMMAND_LEX 1024
+#define MAX_ARGS 100
+
+char cwd[1024];
+char *username;
+
 void initialize_shell() {
-    char cwd[1024];
-    char *username;
     char logged_in_username[1024];
 
-    // get the current login username
+    // Get current login username
     getlogin_r(logged_in_username, sizeof(logged_in_username));
 
-    // get the current working directory
+    // Get current working directory
     getcwd(cwd, sizeof(cwd));
 
-    // get the username
+    // Get the username
     username = getenv("USER");
 
-    // initialize the program
+    // Welcome message
     printf("Welcome to cshell, %s@%s\n", username, logged_in_username);
     printf("Type 'exit' to leave the shell\n");
     printf("Current working directory: %s\n", cwd);
@@ -26,47 +33,50 @@ void initialize_shell() {
 }
 
 void print_prompt() {
-    printf(PROMPT_MSG);
+    printf("%s @ %s =# ", username, basename(cwd));
 }
 
-void read_input(char *input) {
-    fgets(input, 1024, stdin);
-    return;
-}
-
-void display_output(char **output) {
-    for (int i = 0; output[i] != NULL; i++) {
-        printf("%s\n", output[i]);
-    }
-}
-
-char **tokenize_input(char *input) {
-    char **tokens = malloc(1024 * sizeof(char *));
+void execute_command(char *input) {
+    char *args[MAX_ARGS];
     char *token;
     int i = 0;
 
-    token = strtok(input, " \n");
-    while (token != NULL) {
-        tokens[i] = token;
-        i++;
-        token = strtok(NULL, " \n");
+    // Tokenize the input
+    token = strtok(input, " ");
+    while (token != NULL && i < MAX_ARGS - 1) {
+        args[i++] = token;
+        token = strtok(NULL, " ");
+    }
+    args[i] = NULL;
+
+    // Handle built-in commands
+    if (strcmp(args[0], "exit") == 0) {
+        exit_shell();
+    } else if (strcmp(args[0], "cd") == 0) {
+        if (args[1] == NULL) {
+            printf("Expected argument to \"cd\"\n");
+        } else {
+            if (chdir(args[1]) != 0) {
+                perror("cshell");
+            } else {
+                getcwd(cwd, sizeof(cwd));  // Update current directory
+            }
+        }
+        return;
     }
 
-    tokens[i] = NULL;
-    return tokens;
-}
+    // Fork and execute external commands
+    pid_t pid = fork();
 
-void exit_shell() {
-    char user_input;
-    printf("\nLeaving early? Are you sure you want to exit? (y/N)\n");
-    scanf("%c", &user_input);
-
-    // Clear new line character left in input buffer,
-    // it prevents the printing 2 times the prompt message
-    while (getchar() != '\n');
-
-    if (user_input == 'y') {
-        printf("Exiting shell...\n");
-        exit(0);
+    if (pid < 0) {
+        printf("Fork failed");
+        exit(1);
+    } else if (pid == 0) {
+        if (execvp(args[0], args) == -1) {
+            printf("Error executing command\n");
+            exit(1);
+        }
+    } else {
+        wait(NULL);  // Wait for the child process
     }
 }
