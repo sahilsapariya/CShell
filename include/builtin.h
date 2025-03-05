@@ -1,8 +1,6 @@
 #ifndef BUILTIN_H
 #define BUILTIN_H
 
-#define PROMPT_MSG "cshell=# "
-
 // Function prototype to initialize shell
 void initialize_shell();
 
@@ -17,6 +15,9 @@ void read_input(char *input);
 
 // Function prototype to display output
 void display_output(char **output);
+
+// Function prototype to execute command
+void execute_command(char *input);
 
 // Function prototype to tokenize input
 char **tokenize_input(char *input);
