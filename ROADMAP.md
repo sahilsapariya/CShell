@@ -65,13 +65,13 @@
 - [ ] **Task 3.3: Add Built-in Commands (Part 1)**
   - [ ] Implement built-ins:
     - [x] `exit`: Terminate the shell.
-    - [ ] `cd`: Change directories.
+    - [x] `cd`: Change directories.
     - [x] `pwd`: Print working directory.
     - [x] `ls`: List files in the current directory.
     - [x] `echo`: Print arguments to the console.
 
-- [ ] **Task 3.4: Error Handling for Built-ins**
-  - [ ] Handle errors for built-ins (e.g., invalid `cd` paths).
+- [x] **Task 3.4: Error Handling for Built-ins**
+  - [x] Handle errors for built-ins (e.g., invalid `cd` paths).
 
 ---
 

@@ -17,13 +17,23 @@ void initialize_shell() {
     char logged_in_username[1024];
 
     // Get current login username
-    getlogin_r(logged_in_username, sizeof(logged_in_username));
+    if (getlogin_r(logged_in_username, sizeof(logged_in_username)) != 0) {
+        perror("Error getting login username");
+        exit(EXIT_FAILURE);
+    }
 
     // Get current working directory
-    getcwd(cwd, sizeof(cwd));
+    if (getcwd(cwd, sizeof(cwd)) == NULL) {
+        perror("Error getting current working directory");
+        exit(EXIT_FAILURE);
+    }
 
-    // Get the username
+    // Get the username from environment
     username = getenv("USER");
+    if (username == NULL) {
+        fprintf(stderr, "error: Error retrieving USER environment variable\n");
+        exit(EXIT_FAILURE);
+    }
 
     // Welcome message
     printf("Welcome to cshell, %s@%s\n", username, logged_in_username);
@@ -49,17 +59,24 @@ void execute_command(char *input) {
     }
     args[i] = NULL;
 
+    // Check if the input is empty
+    if (args[0] == NULL) {
+        return;  // No command entered
+    }
+
     // Handle built-in commands
     if (strcmp(args[0], "exit") == 0) {
         exit_shell();
     } else if (strcmp(args[0], "cd") == 0) {
         if (args[1] == NULL) {
-            printf("Expected argument to \"cd\"\n");
+            fprintf(stderr, "cshell: expected argument to \"cd\"\n");
         } else {
             if (chdir(args[1]) != 0) {
                 perror("cshell");
             } else {
-                getcwd(cwd, sizeof(cwd));  // Update current directory
+                if (getcwd(cwd, sizeof(cwd)) == NULL) {
+                    perror("Error getting current working directory");
+                }
             }
         }
         return;
@@ -69,14 +86,19 @@ void execute_command(char *input) {
     pid_t pid = fork();
 
     if (pid < 0) {
-        printf("Fork failed");
-        exit(1);
+        perror("Fork failed");
+        exit(EXIT_FAILURE);
     } else if (pid == 0) {
+        // Child process
         if (execvp(args[0], args) == -1) {
-            printf("Error executing command\n");
-            exit(1);
+            perror("cshell");
+            exit(EXIT_FAILURE);
         }
     } else {
-        wait(NULL);  // Wait for the child process
+        // Parent process
+        int status;
+        if (waitpid(pid, &status, 0) == -1) {
+            perror("Error waiting for child process");
+        }
     }
 }
